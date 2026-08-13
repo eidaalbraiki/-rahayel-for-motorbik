@@ -13,8 +13,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0a0a0a">
-  <title>Rahayel Ride Mount | قاعدة رحايل للدراجة النارية</title>
-  <meta name="description" content="قاعدة هاتف للدراجة النارية بتثبيت قوي وتصميم عملي. السعر 200 درهم. الطلب مباشرة عبر واتساب.">
+  <title>Rahayel Motorcycle | رحايل للدراجات النارية</title>
+  <meta name="description" content="رحايل للدراجات النارية — إكسسوارات وحلول عملية للرايدرز، تشمل قاعدة الهاتف وإطار لوحة الدراجة القابل للتخصيص.">
   <style>
     :root{
       --bg:#080808; --panel:#111214; --orange:#ff6a00; --orange2:#ff8a1f;
@@ -83,7 +83,32 @@
       .floating{left:18px;right:18px;bottom:10px;min-height:48px;font-size:14px;border-radius:15px}
       .floating .wa{font-size:18px}
     }
-  </style>
+  
+    .product-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+    .product-card{background:linear-gradient(180deg,#151618,#0e0f11);border:1px solid var(--line);border-radius:26px;overflow:hidden}
+    .product-media{position:relative;background:#fff;aspect-ratio:4/3;overflow:hidden}
+    .product-media img{width:100%;height:100%;object-fit:contain}
+    .product-media.plate-media{background:#f7f7f7}
+    .product-badge{position:absolute;top:14px;right:14px;background:rgba(37,211,102,.92);color:#06130a;font-weight:900;font-size:12px;padding:7px 10px;border-radius:999px}
+    .product-badge.custom{background:linear-gradient(135deg,var(--orange2),var(--orange));color:#111}
+    .product-body{padding:22px}
+    .product-kicker{color:var(--orange);font-size:13px;font-weight:900;letter-spacing:.5px}
+    .product-body h3{font-size:27px;margin:5px 0 8px}
+    .product-body p{color:#aaa;margin:0 0 16px}
+    .mini-specs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+    .mini-specs span{border:1px solid #2a2b2e;background:#111214;border-radius:999px;padding:7px 10px;color:#ddd;font-size:12px}
+    .product-footer{display:flex;align-items:center;justify-content:space-between;gap:14px}
+    .product-price{font-size:34px;font-weight:950;color:var(--orange)}
+    .product-price small{font-size:15px;color:#fff}
+    .plate-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .plate-shot{background:#f6f6f6;border-radius:22px;overflow:hidden;border:1px solid var(--line)}
+    .plate-shot img{aspect-ratio:1/1;object-fit:contain}
+    .custom-panel{margin-top:18px;padding:26px;border-radius:24px;background:radial-gradient(circle at 100% 0%,rgba(255,106,0,.18),transparent 35%),#121315;border:1px solid rgba(255,106,0,.22);display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .custom-panel h2{margin:10px 0 4px;font-size:30px}.custom-panel p{margin:0;color:#aaa}
+    @media(max-width:800px){.product-grid{grid-template-columns:1fr}.plate-gallery{grid-template-columns:1fr 1fr}.custom-panel{flex-direction:column;align-items:stretch}.custom-panel .btn{width:100%}}
+    @media(max-width:520px){.plate-gallery{grid-template-columns:1fr}.product-footer{align-items:stretch;flex-direction:column}.product-footer .btn{width:100%}}
+
+</style>
 </head>
 <body>
 <header>
@@ -91,119 +116,172 @@
     <a class="logo" href="#">
       <span class="logo-badge">🏍</span>
       <strong>RAHAYEL</strong>
-      <span>Ride Mount</span>
+      <span>Motorcycle</span>
     </a>
     <a class="top-order whatsapp-link" href="#">اطلب الآن عبر واتساب</a>
   </div>
 </header>
 
+
 <main class="wrap">
   <section class="hero">
     <div class="hero-copy">
-      <span class="tag">UNIVERSAL MOTORCYCLE PHONE MOUNT</span>
-      <h1>ثبات قوي.<br><span>رؤية أفضل.</span></h1>
-      <p class="lead">قاعدة هاتف عملية للدراجات النارية، مصممة لتثبيت الهاتف بشكل قوي أثناء القيادة مع إمكانية تعديل الزاوية والوضعية حسب رؤيتك.</p>
+      <span class="tag">RAHAYEL MOTORCYCLE</span>
+      <h1>منتجات للرايدرز.<br><span>عملية ومميزة.</span></h1>
+      <p class="lead">
+        رحايل للدراجات النارية — إكسسوارات مختارة وتصاميم مخصصة للرايدرز،
+        مع طلب مباشر وسريع عبر واتساب.
+      </p>
 
       <div class="feature-line">
-        <span class="pill">↻ دوران 360°</span>
-        <span class="pill">🔒 تثبيت محكم</span>
-        <span class="pill">↔ حجم قابل للتعديل</span>
-        <span class="pill">🛡 مقاومة للاهتزاز</span>
-      </div>
-
-      <div class="price-box">
-        <div class="price">200 <small>درهم</small></div>
-        <span class="available">متوفر للطلب</span>
+        <span class="pill">🏍 مخصصة للدراجات</span>
+        <span class="pill">🛠 منتجات عملية</span>
+        <span class="pill">🎨 تخصيص حسب الطلب</span>
+        <span class="pill">💬 طلب مباشر عبر واتساب</span>
       </div>
 
       <div class="actions">
-        <a class="btn btn-main whatsapp-link" href="#">اطلب عبر واتساب</a>
-        <a class="btn btn-dark" href="#details">عرض المواصفات</a>
+        <a class="btn btn-main" href="#products">شاهد المنتجات</a>
+        <a class="btn btn-dark whatsapp-general" href="#">تواصل معنا</a>
       </div>
     </div>
 
     <div class="hero-card">
-      <img src="hero-product.jpg" alt="قاعدة تثبيت الهاتف للدراجة النارية">
-      <div class="price-sticker">السعر<br><b>200 AED</b></div>
+      <img src="hero-product.jpg" alt="منتجات رحايل للدراجات النارية">
+      <div class="price-sticker">RAHAYEL<br><b>MOTORCYCLE</b></div>
     </div>
   </section>
 
-  <section id="details">
+  <section id="products">
     <div class="section-head">
       <div>
-        <h2>مصممة <span>لكل رحلة</span></h2>
-        <p>المزايا الأساسية التي تحتاجها لتثبيت الهاتف بشكل عملي وآمن على الدراجة.</p>
+        <h2>منتجات <span>رحايل</span></h2>
+        <p>اختر المنتج واضغط زر الطلب، وبتفتح لك رسالة واتساب جاهزة باسم المنتج مباشرة.</p>
       </div>
     </div>
 
-    <div class="features">
-      <article class="feature"><div class="icon">↻</div><h3>دوران 360°</h3><p>اضبط زاوية الهاتف بالطول أو العرض للحصول على رؤية مناسبة أثناء القيادة.</p></article>
-      <article class="feature"><div class="icon">🔒</div><h3>تثبيت محكم</h3><p>تصميم يمسك الهاتف من عدة نقاط لتقليل الحركة أثناء الاستخدام على الطريق.</p></article>
-      <article class="feature"><div class="icon">↔</div><h3>قابل للتعديل</h3><p>أذرع قابلة للضبط لتناسب مجموعة واسعة من أحجام الهواتف.</p></article>
-      <article class="feature"><div class="icon">◈</div><h3>هيكل متين</h3><p>تصميم معدني قوي مناسب للاستخدام اليومي والرحلات على الدراجة.</p></article>
+    <div class="product-grid">
+      <article class="product-card">
+        <div class="product-media">
+          <img src="hero-product.jpg" alt="Rahayel Ride Mount">
+          <span class="product-badge">متوفر</span>
+        </div>
+        <div class="product-body">
+          <div class="product-kicker">Rahayel Ride Mount</div>
+          <h3>قاعدة رحايل للهاتف</h3>
+          <p>
+            قاعدة هاتف للدراجة النارية بتثبيت محكم، زاوية قابلة للتعديل،
+            وتصميم عملي مناسب للاستخدام اليومي والرحلات.
+          </p>
+          <div class="mini-specs">
+            <span>↻ دوران 360°</span>
+            <span>🔒 تثبيت محكم</span>
+            <span>🛡 مقاومة للاهتزاز</span>
+            <span>بدون شاحن لاسلكي</span>
+          </div>
+          <div class="product-footer">
+            <div class="product-price">200 <small>درهم</small></div>
+            <a class="btn btn-main whatsapp-mount" href="#">اطلب القاعدة</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="product-card">
+        <div class="product-media plate-media">
+          <img src="plate-frame-1.png" alt="إطار لوحة رحايل للدراجة النارية">
+          <span class="product-badge custom">قابل للتخصيص</span>
+        </div>
+        <div class="product-body">
+          <div class="product-kicker">Rahayel Plate Frame</div>
+          <h3>إطار لوحة الدراجة النارية</h3>
+          <p>
+            إطار لوحة مطبوع 3D بتصميم أنيق للدراجة النارية، مع إمكانية تخصيص
+            الكتابة أو الشعار حسب الطلب.
+          </p>
+          <div class="mini-specs">
+            <span>🇦🇪 تصميم إماراتي</span>
+            <span>🖨 طباعة 3D</span>
+            <span>🎨 تخصيص كتابة أو شعار</span>
+            <span>🏍 مخصص للدراجات</span>
+          </div>
+          <div class="product-footer">
+            <div class="product-price">45 <small>درهم</small></div>
+            <a class="btn btn-main whatsapp-plate" href="#">اطلب إطار اللوحة</a>
+          </div>
+        </div>
+      </article>
     </div>
   </section>
 
   <section>
     <div class="section-head">
       <div>
-        <h2>شوفها <span>على الطبيعة</span></h2>
-        <p>صور المنتج وطريقة تثبيته على مقود الدراجة.</p>
+        <h2>خيارات <span>إطار اللوحة</span></h2>
+        <p>نماذج أولية للتصميم. تقدر تطلب كتابة أو شعار مخصص حسب رغبتك.</p>
       </div>
     </div>
-    <div class="gallery">
-      <div class="gallery-main"><img src="bike-clean.jpg" alt="قاعدة الهاتف مثبتة على مقود الدراجة"></div>
-      <div class="gallery-stack">
-        <div class="gallery-small"><img src="installed-clean.jpg" alt="قاعدة الهاتف على الدراجة النارية"></div>
-        <div class="gallery-small"><img src="hero-product.jpg" alt="تفاصيل قاعدة تثبيت الهاتف"></div>
-      </div>
-    </div>
-  </section>
 
-  <section>
-    <div class="section-head">
-      <div><h2>المواصفات <span>الرئيسية</span></h2><p>معلومات مختصرة وواضحة قبل الطلب.</p></div>
+    <div class="plate-gallery">
+      <div class="plate-shot"><img src="plate-frame-1.png" alt="نموذج إطار لوحة رحايل 1"></div>
+      <div class="plate-shot"><img src="plate-frame-2.png" alt="نموذج إطار لوحة رحايل 2"></div>
+      <div class="plate-shot"><img src="plate-frame-3.png" alt="نموذج إطار لوحة رحايل 3"></div>
     </div>
-    <div class="spec-grid">
-      <div class="spec"><div class="check">✓</div><div><b>قاعدة للمقود</b><span>مصممة للتركيب على مقود الدراجة النارية مع تثبيت قوي.</span></div></div>
-      <div class="spec"><div class="check">✓</div><div><b>زاوية قابلة للتعديل</b><span>يمكن تعديل وضع الهاتف للحصول على أفضل زاوية رؤية.</span></div></div>
-      <div class="spec"><div class="check">✓</div><div><b>توافق واسع</b><span>تصميم قابل للتعديل ليتناسب مع مجموعة واسعة من الهواتف.</span></div></div>
-      <div class="spec"><div class="check">✓</div><div><b>مقاومة للحركة والاهتزاز</b><span>نظام تثبيت متعدد النقاط للمساعدة في إبقاء الهاتف ثابتًا.</span></div></div>
-      <div class="spec"><div class="check">✓</div><div><b>تصميم معدني متين</b><span>هيكل قوي مناسب للاستخدام على الدراجات والرحلات.</span></div></div>
-      <div class="spec"><div class="check">✓</div><div><b>تركيب عملي</b><span>يمكن ضبط القاعدة والمفصل حسب موقع المقود وزاوية الاستخدام.</span></div></div>
+
+    <div class="custom-panel">
+      <div>
+        <span class="tag">CUSTOM DESIGN</span>
+        <h2>تبغي تصميمك الخاص؟</h2>
+        <p>أرسل لنا الفكرة أو الشعار على واتساب، وبنرتب معك تفاصيل التخصيص.</p>
+      </div>
+      <a class="btn btn-main whatsapp-custom" href="#">اطلب تصميم مخصص</a>
     </div>
-    <div class="notice"><strong>ملاحظة:</strong> هذا الإصدار هو <strong>قاعدة تثبيت فقط بدون شاحن لاسلكي</strong>.</div>
   </section>
 
   <section class="order-panel">
-    <div><h2>اطلبها الآن بـ 200 درهم</h2><p>اضغط على الزر وسيتم فتح واتساب مباشرة برسالة جاهزة للطلب.</p></div>
-    <a class="btn btn-main whatsapp-link" href="#">تواصل عبر واتساب</a>
+    <div>
+      <h2>رحايل للدراجات النارية</h2>
+      <p>منتجات عملية للرايدرز، والطلب مباشرة عبر واتساب.</p>
+    </div>
+    <a class="btn btn-main whatsapp-general" href="#">تواصل عبر واتساب</a>
   </section>
 </main>
 
-<footer><div class="wrap">Rahayel Ride Mount — الإمارات العربية المتحدة</div></footer>
 
-<a class="floating whatsapp-link" href="#" aria-label="اطلب عبر واتساب"><span class="wa">💬</span>اطلب عبر واتساب — 200 درهم</a>
+<footer><div class="wrap">Rahayel Motorcycle — رحايل للدراجات النارية</div></footer>
+
+<a class="floating whatsapp-general" href="#" aria-label="تواصل عبر واتساب"><span class="wa">💬</span>تواصل مع رحايل عبر واتساب</a>
 
 <script>
   const whatsappNumber = "971555007282";
-  const message = "السلام عليكم، أرغب في طلب قاعدة Rahayel Ride Mount لتثبيت الهاتف على الدراجة النارية بسعر 200 درهم. هل المنتج متوفر؟";
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-  document.querySelectorAll(".whatsapp-link").forEach(link => {
-    link.href = whatsappUrl;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
 
-    link.addEventListener("click", () => {
-      if (typeof gtag === "function") {
-        gtag("event", "whatsapp_order_click", {
-          event_category: "engagement",
-          event_label: "Rahayel Ride Mount",
-          value: 1
-        });
-      }
+  const links = {
+    mount: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أبغي أطلب قاعدة Rahayel Ride Mount لتثبيت الهاتف على الدراجة النارية بسعر 200 درهم. هل المنتج متوفر؟")}`,
+    plate: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أبغي أطلب إطار لوحة رحايل للدراجة النارية بسعر 45 درهم. أبغي أعرف خيارات التصميم والتخصيص.")}`,
+    custom: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أبغي أسوي إطار لوحة مخصص للدراجة النارية من رحايل. عندي فكرة/شعار وأبغي أعرف التفاصيل.")}`,
+    general: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أبغي أستفسر عن منتجات رحايل للدراجات النارية.")}`
+  };
+
+  function bindWhatsApp(selector, url, eventName, label) {
+    document.querySelectorAll(selector).forEach(link => {
+      link.href = url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.addEventListener("click", () => {
+        if (typeof gtag === "function") {
+          gtag("event", eventName, {
+            event_category: "engagement",
+            event_label: label,
+            value: 1
+          });
+        }
+      });
     });
-  });
+  }
+
+  bindWhatsApp(".whatsapp-mount", links.mount, "whatsapp_mount_click", "Rahayel Ride Mount");
+  bindWhatsApp(".whatsapp-plate", links.plate, "whatsapp_plate_click", "Rahayel Plate Frame");
+  bindWhatsApp(".whatsapp-custom", links.custom, "whatsapp_custom_click", "Rahayel Custom Plate");
+  bindWhatsApp(".whatsapp-general", links.general, "whatsapp_general_click", "Rahayel Motorcycle");
 </script>
 </body>
 </html>
