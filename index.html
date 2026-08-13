@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3XVQBFE5C3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-3XVQBFE5C3');
+  </script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0a0a0a">
@@ -184,6 +193,16 @@
     link.href = whatsappUrl;
     link.target = "_blank";
     link.rel = "noopener noreferrer";
+
+    link.addEventListener("click", () => {
+      if (typeof gtag === "function") {
+        gtag("event", "whatsapp_order_click", {
+          event_category: "engagement",
+          event_label: "Rahayel Ride Mount",
+          value: 1
+        });
+      }
+    });
   });
 </script>
 </body>
