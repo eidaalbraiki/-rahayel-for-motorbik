@@ -12,9 +12,10 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="rahayel-icon.png">
   <meta name="theme-color" content="#0a0a0a">
   <title>Rahayel Motorcycle | رحايل للدراجات النارية</title>
-  <meta name="description" content="رحايل للدراجات النارية — إكسسوارات وحلول عملية للدراجين، تشمل قاعدة الهاتف، وإطار لوحة الدراجة، وحامل الخوذة.">
+  <meta name="description" content="رحايل للدراجات النارية — إكسسوارات وحلول عملية للدراجين، تشمل قاعدة الهاتف، وإطار لوحة الدراجة، وحامل الخوذة، ومنظّم سلك الشحن.">
   <style>
     :root{
       --bg:#080808; --panel:#111214; --orange:#ff6a00; --orange2:#ff8a1f;
@@ -32,7 +33,7 @@
     header{position:sticky;top:0;z-index:40;background:rgba(6,6,6,.84);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.07)}
     .nav{height:68px;display:flex;align-items:center;justify-content:space-between;gap:14px}
     .logo{display:flex;align-items:center;gap:11px;font-weight:900}
-    .logo-badge{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,var(--orange2),var(--orange));color:#111;font-size:20px}
+    .logo-badge{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:#fff;overflow:hidden;padding:3px}.logo-badge img{width:100%;height:100%;object-fit:contain}
     .logo strong{color:var(--orange);font-size:22px;letter-spacing:1px}
     .top-order{padding:10px 15px;border:1px solid rgba(255,106,0,.45);border-radius:999px;font-weight:800;font-size:14px}
     .hero{min-height:calc(100vh - 68px);display:grid;grid-template-columns:1fr 1fr;gap:42px;align-items:center;padding:42px 0 48px}
@@ -124,7 +125,7 @@
 <header>
   <div class="wrap nav">
     <a class="logo" href="#">
-      <span class="logo-badge">🏍</span>
+      <span class="logo-badge"><img src="rahayel-icon.png" alt="شعار رحايل"></span>
       <strong>RAHAYEL</strong>
       <span>Motorcycle</span>
     </a>
@@ -190,7 +191,7 @@
             
           </div>
           <div class="product-footer">
-            <div class="product-price">220<small>درهم</small></div>
+            <div class="product-price">219 <small>درهم</small></div>
             <div class="card-actions"><a class="btn btn-dark" href="phone-mount.html">عرض التفاصيل</a><a class="btn btn-main whatsapp-mount" href="#">اطلب مسبقًا</a></div>
           </div>
         </div>
@@ -240,6 +241,28 @@
           <div class="product-footer">
             <div class="product-price">55 <small>درهم</small></div>
             <a class="btn btn-main whatsapp-helmet" href="#">اطلب حامل الخوذة</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="product-card">
+        <div class="product-media">
+          <img src="cable-organizer.webp" alt="منظّم سلك الشحن للدراجة النارية">
+          <span class="product-badge">متوفر</span>
+        </div>
+        <div class="product-body">
+          <div class="product-kicker">Rahayel Cable Organizer</div>
+          <h3>منظّم سلك الشحن</h3>
+          <p>حل عملي لترتيب سلك الشحن على الدراجة بدل بقاء السلك طويلًا ومتحركًا أثناء الطريق. لف السلك الزائد حول المنظّم وخله مرتب وقريب من منفذ الشحن.</p>
+          <div class="mini-specs">
+            <span>🔌 ترتيب سلك الشحن</span>
+            <span>🏍 مناسب للدراجة</span>
+            <span>🧩 صغير وعملي</span>
+            <span>🖨 طباعة 3D</span>
+          </div>
+          <div class="product-footer">
+            <div class="product-price">30 <small>درهم</small></div>
+            <a class="btn btn-main whatsapp-cable" href="#">اطلب منظّم السلك</a>
           </div>
         </div>
       </article>
@@ -317,6 +340,7 @@
     mount: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أبغي أطلب طلبًا مسبقًا لقاعدة Rahayel Ride Mount لتثبيت الهاتف على الدراجة النارية بسعر 219 درهم.")}`,
     plate: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أبغي أطلب إطار لوحة رحايل للدراجة النارية بسعر 45 درهم.")}`,
     helmet: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أبغي أطلب حامل خوذة ومعدات رحايل بسعر 55 درهم. هل المنتج متوفر؟")}`,
+    cable: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أبغي أطلب منظّم سلك الشحن للدراجة النارية بسعر 30 درهم. هل المنتج متوفر؟")}`,
     general: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أبغي أستفسر عن منتجات رحايل للدراجات النارية.")}`
   };
 
