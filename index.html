@@ -108,6 +108,11 @@
     @media(max-width:800px){.product-grid{grid-template-columns:1fr}.plate-gallery{grid-template-columns:1fr 1fr}.custom-panel{flex-direction:column;align-items:stretch}.custom-panel .btn{width:100%}}
     @media(max-width:520px){.plate-gallery{grid-template-columns:1fr}.product-footer{align-items:stretch;flex-direction:column}.product-footer .btn{width:100%}}
 
+
+    .product-link{display:block;color:inherit}
+    .card-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .card-actions .btn{min-width:145px}
+    @media(max-width:520px){.card-actions{width:100%;display:grid;grid-template-columns:1fr 1fr}.card-actions .btn{min-width:0;padding:0 10px}}
 </style>
 </head>
 <body>
@@ -147,7 +152,7 @@
     </div>
 
     <div class="hero-card">
-      <img src="hero-product.jpg" alt="منتجات رحايل للدراجات النارية">
+      <img src="rahayel-phone-mount-main.jpg" alt="منتجات رحايل للدراجات النارية">
       <div class="price-sticker">RAHAYEL<br><b>MOTORCYCLE</b></div>
     </div>
   </section>
@@ -162,10 +167,10 @@
 
     <div class="product-grid">
       <article class="product-card">
-        <div class="product-media">
-          <img src="hero-product.jpg" alt="Rahayel Ride Mount">
+        <a class="product-media product-link" href="phone-mount.html" aria-label="عرض تفاصيل قاعدة رحايل للهاتف">
+          <img src="rahayel-phone-mount-main.jpg" alt="قاعدة رحايل للهاتف للدراجة النارية">
           <span class="product-badge custom">طلب مسبق</span>
-        </div>
+        </a>
         <div class="product-body">
           <div class="product-kicker">Rahayel Ride Mount</div>
           <h3>قاعدة رحايل للهاتف</h3>
@@ -177,11 +182,11 @@
             <span>↻ دوران 360°</span>
             <span>🔒 تثبيت محكم</span>
             <span>🛡 مقاومة للاهتزاز</span>
-            <span>بدون شاحن لاسلكي</span>
+            
           </div>
           <div class="product-footer">
             <div class="product-price">219 <small>درهم</small></div>
-            <a class="btn btn-main whatsapp-mount" href="#">اطلب مسبقًا</a>
+            <div class="card-actions"><a class="btn btn-dark" href="phone-mount.html">عرض التفاصيل</a><a class="btn btn-main whatsapp-mount" href="#">اطلب مسبقًا</a></div>
           </div>
         </div>
       </article>
