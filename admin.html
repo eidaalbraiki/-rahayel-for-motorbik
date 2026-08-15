@@ -66,8 +66,10 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 @media(max-width:850px){.grid{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.brand span{display:none}}
 @media(max-width:520px){.stat b{font-size:24px}.order-row{grid-template-columns:1fr .55fr auto}}
 @media print{
+  @page{margin:12mm}
   body>*:not(#printInvoice){display:none!important}
   #printInvoice{display:block!important;margin:0;max-width:none}
+  .actions{display:none!important}
 }
 </style>
 </head>
@@ -159,10 +161,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 </section>
 
 <section id="orders" class="page">
-  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
-<h2>الفواتير والعملاء</h2>
-<button class="btn danger" onclick="clearSalesData()">حذف جميع بيانات البيع</button>
-</div>
+  <h2>الفواتير والعملاء</h2>
   <input class="search" id="orderSearch" placeholder="ابحث بالاسم أو الهاتف أو رقم الفاتورة..." oninput="renderOrders()">
   <div class="table-wrap">
     <table>
@@ -208,10 +207,7 @@ const DEFAULT_PRODUCTS=[
 ];
 let products=JSON.parse(localStorage.getItem(KEYS.products)||"null")||DEFAULT_PRODUCTS;
 let orders=JSON.parse(localStorage.getItem(KEYS.orders)||"[]");
-let settings=JSON.parse(localStorage.getItem(KEYS.settings)||"null")||{storeName:"Rahayel Motorcycle",whatsapp:"+971 55 500 7282",phone:"+971 55 500 7282"};
-settings.whatsapp="+971 55 500 7282";
-settings.phone="+971 55 500 7282";
-localStorage.setItem(KEYS.settings,JSON.stringify(settings));
+let settings=JSON.parse(localStorage.getItem(KEYS.settings)||"null")||{storeName:"Rahayel Motorcycle",whatsapp:"+971 56 911 2963",phone:"0555007282"};
 
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
@@ -312,31 +308,19 @@ function renderOrders(){
   $("ordersBody").innerHTML=orders.filter(o=>[o.invoiceNo,o.customer,o.phone].join(" ").toLowerCase().includes(q)).map(o=>`<tr>
     <td><b>${o.invoiceNo}</b></td><td>${o.date}</td><td>${esc(o.customer||"-")}</td><td>${esc(o.phone||"-")}</td>
     <td>${o.total} درهم</td><td><span class="badge">${o.payment}</span></td>
-    <td><button class="btn dark" onclick="showInvoiceByNo('${o.invoiceNo}')">عرض/طباعة</button> <button class="btn danger" onclick="deleteInvoice('${o.invoiceNo}')">حذف</button></td></tr>`).join("");
-}
-function deleteInvoice(no){
- const o=orders.find(x=>x.invoiceNo===no);if(!o)return;
- if(!confirm("حذف الفاتورة "+no+"؟ سيتم إرجاع كمياتها إلى المخزون."))return;
- (o.items||[]).forEach(it=>{const p=products.find(x=>x.id===it.id);if(p)p.qty+=Number(it.qty||0)});
- orders=orders.filter(x=>x.invoiceNo!==no);persist();
-}
-function clearSalesData(){
- if(!orders.length)return alert("لا توجد بيانات بيع لحذفها.");
- if(!confirm("سيتم حذف جميع الفواتير وبيانات البيع التجريبية وإرجاع الكميات إلى المخزون. هل أنت متأكد؟"))return;
- if(!confirm("تأكيد نهائي: حذف جميع بيانات البيع؟"))return;
- orders.forEach(o=>(o.items||[]).forEach(it=>{const p=products.find(x=>x.id===it.id);if(p)p.qty+=Number(it.qty||0)}));
- orders=[];persist();alert("تم حذف جميع بيانات البيع والفواتير.");
+    <td><button class="btn dark" onclick="showInvoiceByNo('${o.invoiceNo}')">عرض/طباعة</button></td></tr>`).join("");
 }
 function showInvoiceByNo(no){let o=orders.find(x=>x.invoiceNo===no);if(o)showInvoice(o)}
 function showInvoice(o){
   $("printInvoice").innerHTML=`<div class="invoice-head"><div><h2>${esc(settings.storeName)}</h2><div>رحايل للدراجات النارية</div></div><div><b>فاتورة ${o.invoiceNo}</b><br>${o.date}</div></div>
-  <p><b>العميل:</b> ${esc(o.customer||"-")} &nbsp; | &nbsp; <b>الهاتف:</b> ${esc(o.phone||"-")}</p>
+  <p><b>العميل:</b> ${esc(o.customer||"-")} &nbsp; | &nbsp; <b>الهاتف:</b> <span dir="ltr" style="unicode-bidi:isolate">${esc(o.phone||"-")}</span></p>
   <table><thead><tr><th>المنتج</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th></tr></thead><tbody>${o.items.map(x=>`<tr><td>${esc(x.name)}</td><td>${x.qty}</td><td>${x.price}</td><td>${x.subtotal}</td></tr>`).join("")}</tbody></table>
   <p>طريقة الاستلام: ${o.delivery}${o.deliveryFee?` — رسوم التوصيل ${o.deliveryFee} درهم`:""}</p>
   <p>الدفع: ${o.payment} — ${o.paymentMethod||"-"}</p>${o.note?`<p>ملاحظات: ${esc(o.note)}</p>`:""}
   <div class="invoice-total">الإجمالي النهائي: ${o.total} درهم</div>
-  <p style="font-size:12px">واتساب: ${esc(settings.whatsapp)} | الاتصال: ${esc(settings.phone)}</p>
-  <div class="actions"><button class="btn primary" onclick="window.print()">طباعة / حفظ PDF</button><button class="btn dark" onclick="$('printInvoice').style.display='none'">إغلاق</button></div>`;
+  <p style="font-size:12px">واتساب: <span dir="ltr" style="unicode-bidi:isolate">${esc(settings.whatsapp)}</span> | الاتصال: <span dir="ltr" style="unicode-bidi:isolate">${esc(settings.phone)}</span></p>
+  <div class="actions"><button class="btn primary" onclick="window.print()">طباعة / حفظ PDF</button><button class="btn dark" onclick="$('printInvoice').style.display='none'">إغلاق</button></div>
+  <p style="font-size:11px;color:#555;margin-top:10px">ملاحظة عند حفظ PDF: عطّل خيار <b>Headers and Footers</b> من نافذة الطباعة لإخفاء رابط صفحة الإدارة والتاريخ ورقم الصفحة التي يضيفها المتصفح تلقائيًا. تاريخ الفاتورة داخل التصميم سيبقى ظاهرًا.</p>`;
   $("printInvoice").style.display="block";$("printInvoice").scrollIntoView({behavior:"smooth"});
 }
 function loadSettings(){$("storeName").value=settings.storeName;$("storeWhatsapp").value=settings.whatsapp;$("storePhone").value=settings.phone}
