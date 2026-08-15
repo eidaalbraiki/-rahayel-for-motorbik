@@ -159,7 +159,10 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 </section>
 
 <section id="orders" class="page">
-  <h2>الفواتير والعملاء</h2>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+<h2>الفواتير والعملاء</h2>
+<button class="btn danger" onclick="clearSalesData()">حذف جميع بيانات البيع</button>
+</div>
   <input class="search" id="orderSearch" placeholder="ابحث بالاسم أو الهاتف أو رقم الفاتورة..." oninput="renderOrders()">
   <div class="table-wrap">
     <table>
@@ -205,7 +208,10 @@ const DEFAULT_PRODUCTS=[
 ];
 let products=JSON.parse(localStorage.getItem(KEYS.products)||"null")||DEFAULT_PRODUCTS;
 let orders=JSON.parse(localStorage.getItem(KEYS.orders)||"[]");
-let settings=JSON.parse(localStorage.getItem(KEYS.settings)||"null")||{storeName:"Rahayel Motorcycle",whatsapp:"+971 55 500 7282",phone:"0555007282"};
+let settings=JSON.parse(localStorage.getItem(KEYS.settings)||"null")||{storeName:"Rahayel Motorcycle",whatsapp:"+971 55 500 7282",phone:"+971 55 500 7282"};
+settings.whatsapp="+971 55 500 7282";
+settings.phone="+971 55 500 7282";
+localStorage.setItem(KEYS.settings,JSON.stringify(settings));
 
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
@@ -306,7 +312,20 @@ function renderOrders(){
   $("ordersBody").innerHTML=orders.filter(o=>[o.invoiceNo,o.customer,o.phone].join(" ").toLowerCase().includes(q)).map(o=>`<tr>
     <td><b>${o.invoiceNo}</b></td><td>${o.date}</td><td>${esc(o.customer||"-")}</td><td>${esc(o.phone||"-")}</td>
     <td>${o.total} درهم</td><td><span class="badge">${o.payment}</span></td>
-    <td><button class="btn dark" onclick="showInvoiceByNo('${o.invoiceNo}')">عرض/طباعة</button></td></tr>`).join("");
+    <td><button class="btn dark" onclick="showInvoiceByNo('${o.invoiceNo}')">عرض/طباعة</button> <button class="btn danger" onclick="deleteInvoice('${o.invoiceNo}')">حذف</button></td></tr>`).join("");
+}
+function deleteInvoice(no){
+ const o=orders.find(x=>x.invoiceNo===no);if(!o)return;
+ if(!confirm("حذف الفاتورة "+no+"؟ سيتم إرجاع كمياتها إلى المخزون."))return;
+ (o.items||[]).forEach(it=>{const p=products.find(x=>x.id===it.id);if(p)p.qty+=Number(it.qty||0)});
+ orders=orders.filter(x=>x.invoiceNo!==no);persist();
+}
+function clearSalesData(){
+ if(!orders.length)return alert("لا توجد بيانات بيع لحذفها.");
+ if(!confirm("سيتم حذف جميع الفواتير وبيانات البيع التجريبية وإرجاع الكميات إلى المخزون. هل أنت متأكد؟"))return;
+ if(!confirm("تأكيد نهائي: حذف جميع بيانات البيع؟"))return;
+ orders.forEach(o=>(o.items||[]).forEach(it=>{const p=products.find(x=>x.id===it.id);if(p)p.qty+=Number(it.qty||0)}));
+ orders=[];persist();alert("تم حذف جميع بيانات البيع والفواتير.");
 }
 function showInvoiceByNo(no){let o=orders.find(x=>x.invoiceNo===no);if(o)showInvoice(o)}
 function showInvoice(o){
