@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080808">
+<title>Rahayel Admin | إدارة رحايل</title>
+<style>
+:root{
+  --bg:#080808;--panel:#121315;--panel2:#17181b;--text:#f7f7f7;--muted:#a9a9a9;
+  --line:#2b2c30;--orange:#ff6a00;--orange2:#ff8a1f;--green:#25d366;--red:#ff6262;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 90% 0%,rgba(255,106,0,.10),transparent 24%),#080808;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif}
+button,input,select,textarea{font:inherit}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(1180px,calc(100% - 24px));margin:auto}
+.top{position:sticky;top:0;z-index:30;background:rgba(8,8,8,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav{min-height:68px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900}.brand b{font-size:23px;color:var(--orange)}.brand span{color:#bbb}
+.small{font-size:12px;color:var(--muted)}
+.tabs{display:flex;gap:8px;overflow:auto;padding:14px 0}
+.tab{white-space:nowrap;border:1px solid var(--line);background:#151619;color:#eee;border-radius:12px;padding:10px 14px;cursor:pointer;font-weight:800}
+.tab.active{background:linear-gradient(135deg,var(--orange2),var(--orange));color:#111;border-color:transparent}
+main{padding:18px 0 60px}
+.page{display:none}.page.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.card{background:linear-gradient(180deg,#151619,#101113);border:1px solid var(--line);border-radius:18px;padding:17px}
+.stat b{display:block;font-size:30px;color:var(--orange);line-height:1.1}.stat span{color:var(--muted)}
+h1,h2,h3{margin-top:0}
+.section{margin-top:18px}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:16px;background:#101113}
+table{width:100%;border-collapse:collapse;min-width:780px}
+th,td{padding:13px;border-bottom:1px solid #242529;text-align:right}
+th{background:#151619;color:#bdbdbd} td{color:#eee}
+.btn{border:0;border-radius:12px;padding:10px 14px;cursor:pointer;font-weight:900}
+.primary{background:linear-gradient(135deg,var(--orange2),var(--orange));color:#111}
+.dark{background:#222328;color:#fff;border:1px solid #34353a}
+.green{background:var(--green);color:#07140b}
+.danger{background:#341a1a;color:#ffabab;border:1px solid #5c2b2b}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.field label{display:block;color:#aaa;font-size:13px;margin-bottom:6px}
+.field input,.field select,.field textarea,.search{
+  width:100%;background:#0d0e10;border:1px solid #303137;color:#fff;border-radius:12px;padding:12px
+}
+.field textarea{min-height:90px;resize:vertical}
+.search{max-width:430px;margin-bottom:12px}
+.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:12px;background:#232429}
+.ok{color:#7de6a3}.warn{color:#ffb36e}.out{color:var(--red)}
+.order-items{display:grid;gap:8px;margin:14px 0}
+.order-row{display:grid;grid-template-columns:2fr .7fr auto;gap:8px}
+.summary{background:#0e0f11;border:1px solid var(--line);padding:16px;border-radius:14px;margin-top:14px}
+.summary b{color:var(--orange);font-size:26px}
+.notice{border:1px solid rgba(255,106,0,.25);background:rgba(255,106,0,.06);border-radius:14px;padding:13px;color:#ccc}
+.invoice{display:none;background:white;color:#111;padding:28px;max-width:760px;margin:20px auto}
+.invoice table{background:white;min-width:0}.invoice th,.invoice td{color:#111;border-color:#ddd;background:white}
+.invoice-head{display:flex;justify-content:space-between;gap:20px;border-bottom:2px solid #111;padding-bottom:14px;margin-bottom:18px}
+.invoice-total{text-align:left;font-weight:900;font-size:22px;margin-top:16px}
+.login-overlay{position:fixed;inset:0;z-index:100;background:#070707;display:grid;place-items:center;padding:18px}
+.login-box{width:min(460px,100%);background:#121315;border:1px solid var(--line);border-radius:22px;padding:24px}
+.login-box h1{color:var(--orange);margin-bottom:4px}
+.login-box input{width:100%;margin:10px 0;background:#0d0e10;border:1px solid #333;color:#fff;padding:13px;border-radius:12px}
+.hidden{display:none!important}
+hr{border:0;border-top:1px solid var(--line);margin:18px 0}
+@media(max-width:850px){.grid{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.brand span{display:none}}
+@media(max-width:520px){.stat b{font-size:24px}.order-row{grid-template-columns:1fr .55fr auto}}
+@media print{
+  body>*:not(#printInvoice){display:none!important}
+  #printInvoice{display:block!important;margin:0;max-width:none}
+}
+</style>
+</head>
+<body>
+
+<div id="loginOverlay" class="login-overlay">
+  <div class="login-box">
+    <h1>RAHAYEL</h1>
+    <p id="loginTitle">تسجيل الدخول إلى لوحة الإدارة</p>
+    <div id="setupHelp" class="small hidden">أول استخدام: أنشئ كلمة مرور خاصة بك. سيتم حفظ بصمتها على هذا الجهاز فقط.</div>
+    <input id="passwordInput" type="password" placeholder="كلمة المرور">
+    <input id="passwordConfirm" class="hidden" type="password" placeholder="تأكيد كلمة المرور">
+    <button id="loginBtn" class="btn primary" style="width:100%">دخول</button>
+    <p id="loginMsg" class="small"></p>
+    <div class="notice" style="margin-top:14px">
+      هذه النسخة تعمل محليًا داخل المتصفح. لا تحفظ بيانات العملاء على جهاز عام أو مشترك.
+    </div>
+  </div>
+</div>
+
+<header class="top">
+  <div class="wrap nav">
+    <div class="brand"><b>RAHAYEL</b><span>إدارة المخزون والفواتير</span></div>
+    <div class="actions">
+      <button class="btn dark" onclick="exportBackup()">نسخة احتياطية</button>
+      <button class="btn dark" onclick="document.getElementById('importFile').click()">استيراد</button>
+      <input id="importFile" class="hidden" type="file" accept=".json,application/json">
+      <button class="btn danger" onclick="lockAdmin()">قفل</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap tabs">
+  <button class="tab active" data-page="dashboard">الرئيسية</button>
+  <button class="tab" data-page="inventory">المخزون</button>
+  <button class="tab" data-page="neworder">طلب / فاتورة</button>
+  <button class="tab" data-page="orders">الفواتير والعملاء</button>
+  <button class="tab" data-page="settings">الإعدادات</button>
+</div>
+
+<main class="wrap">
+<section id="dashboard" class="page active">
+  <h2>نظرة سريعة</h2>
+  <div class="grid">
+    <div class="card stat"><b id="statStock">0</b><span>إجمالي القطع بالمخزون</span></div>
+    <div class="card stat"><b id="statOrders">0</b><span>عدد الفواتير</span></div>
+    <div class="card stat"><b id="statSales">0</b><span>إجمالي المبيعات</span></div>
+    <div class="card stat"><b id="statLow">0</b><span>تنبيهات المخزون</span></div>
+  </div>
+  <div class="card section"><h3>تنبيهات المخزون</h3><div id="alerts"></div></div>
+</section>
+
+<section id="inventory" class="page">
+  <div class="actions" style="justify-content:space-between;align-items:center">
+    <h2>إدارة المخزون</h2>
+    <button class="btn primary" onclick="addProduct()">+ إضافة منتج</button>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>المنتج</th><th>السعر</th><th>الكمية</th><th>حد التنبيه</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+      <tbody id="inventoryBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="neworder" class="page">
+  <h2>إصدار فاتورة سريعة</h2>
+  <div class="card">
+    <div class="form-grid">
+      <div class="field"><label>اسم العميل</label><input id="customerName" placeholder="اختياري"></div>
+      <div class="field"><label>رقم الهاتف</label><input id="customerPhone" inputmode="tel" placeholder="05xxxxxxxx"></div>
+      <div class="field"><label>طريقة الاستلام</label><select id="deliveryMethod"><option>استلام</option><option>توصيل</option></select></div>
+      <div class="field"><label>رسوم التوصيل</label><input id="deliveryFee" type="number" min="0" value="0"></div>
+      <div class="field"><label>حالة الدفع</label><select id="paymentStatus"><option>غير مدفوع</option><option>مدفوع</option></select></div>
+      <div class="field"><label>طريقة الدفع</label><select id="paymentMethod"><option>نقدًا</option><option>تحويل</option><option>رابط دفع</option><option>أخرى</option></select></div>
+      <div class="field" style="grid-column:1/-1"><label>ملاحظات</label><textarea id="orderNote" placeholder="اختياري"></textarea></div>
+    </div>
+
+    <h3 style="margin-top:22px">المنتجات</h3>
+    <div id="orderItems" class="order-items"></div>
+    <button class="btn dark" onclick="addOrderRow()">+ إضافة منتج للفاتورة</button>
+
+    <div class="summary">الإجمالي: <b><span id="orderTotal">0</span> درهم</b></div>
+    <div class="actions" style="margin-top:14px">
+      <button class="btn primary" onclick="saveOrder()">حفظ وإصدار الفاتورة</button>
+      <button class="btn dark" onclick="resetOrder()">مسح</button>
+    </div>
+  </div>
+</section>
+
+<section id="orders" class="page">
+  <h2>الفواتير والعملاء</h2>
+  <input class="search" id="orderSearch" placeholder="ابحث بالاسم أو الهاتف أو رقم الفاتورة..." oninput="renderOrders()">
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>رقم الفاتورة</th><th>التاريخ</th><th>العميل</th><th>الهاتف</th><th>الإجمالي</th><th>الدفع</th><th>إجراءات</th></tr></thead>
+      <tbody id="ordersBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="settings" class="page">
+  <h2>الإعدادات</h2>
+  <div class="card">
+    <h3>بيانات المتجر</h3>
+    <div class="form-grid">
+      <div class="field"><label>اسم المتجر</label><input id="storeName"></div>
+      <div class="field"><label>رقم واتساب</label><input id="storeWhatsapp"></div>
+      <div class="field"><label>رقم الاتصال</label><input id="storePhone"></div>
+    </div>
+    <div class="actions" style="margin-top:14px"><button class="btn primary" onclick="saveSettings()">حفظ الإعدادات</button></div>
+    <hr>
+    <h3>الأمان</h3>
+    <div class="actions">
+      <button class="btn dark" onclick="changePassword()">تغيير كلمة المرور</button>
+      <button class="btn danger" onclick="clearAllData()">مسح جميع البيانات</button>
+    </div>
+    <hr>
+    <div class="notice">
+      <b>مهم:</b> لأن GitHub Pages استضافة ثابتة، هذه اللوحة لا توفر مزامنة حقيقية بين الأجهزة. النسخة الاحتياطية مهمة. للانتقال إلى قاعدة بيانات مركزية وتسجيل دخول قوي نحتاج ربط خدمة مثل Supabase أو Firebase.
+    </div>
+  </div>
+</section>
+</main>
+
+<div id="printInvoice" class="invoice"></div>
+
+<script>
+const KEYS={products:"rahayel_products_v2",orders:"rahayel_orders_v2",settings:"rahayel_settings_v2",pwd:"rahayel_admin_hash_v2"};
+const DEFAULT_PRODUCTS=[
+  {id:"mount",name:"قاعدة رحايل للهاتف",price:220,qty:0,min:3},
+  {id:"plate",name:"إطار لوحة الدراجة النارية",price:45,qty:0,min:3},
+  {id:"helmet",name:"حامل الخوذة ومعدات رحايل",price:55,qty:0,min:3},
+  {id:"cable",name:"منظّم سلك الشحن",price:30,qty:0,min:3}
+];
+let products=JSON.parse(localStorage.getItem(KEYS.products)||"null")||DEFAULT_PRODUCTS;
+let orders=JSON.parse(localStorage.getItem(KEYS.orders)||"[]");
+let settings=JSON.parse(localStorage.getItem(KEYS.settings)||"null")||{storeName:"Rahayel Motorcycle",whatsapp:"+971 56 911 2963",phone:"0555007282"};
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+async function sha256(t){const b=new TextEncoder().encode(t);const h=await crypto.subtle.digest("SHA-256",b);return [...new Uint8Array(h)].map(x=>x.toString(16).padStart(2,"0")).join("")}
+
+async function initLogin(){
+  const has=localStorage.getItem(KEYS.pwd);
+  if(!has){
+    $("loginTitle").textContent="إنشاء كلمة مرور للإدارة";
+    $("setupHelp").classList.remove("hidden");
+    $("passwordConfirm").classList.remove("hidden");
+    $("loginBtn").textContent="حفظ كلمة المرور والدخول";
+  }
+}
+$("loginBtn").onclick=async()=>{
+  const p=$("passwordInput").value;
+  const stored=localStorage.getItem(KEYS.pwd);
+  if(!stored){
+    const c=$("passwordConfirm").value;
+    if(p.length<6){$("loginMsg").textContent="استخدم 6 أحرف/أرقام على الأقل.";return}
+    if(p!==c){$("loginMsg").textContent="كلمتا المرور غير متطابقتين.";return}
+    localStorage.setItem(KEYS.pwd,await sha256(p));
+    sessionStorage.setItem("rahayel_admin_session","1");
+    $("loginOverlay").classList.add("hidden");
+    renderAll();
+  }else{
+    if(await sha256(p)!==stored){$("loginMsg").textContent="كلمة المرور غير صحيحة.";return}
+    sessionStorage.setItem("rahayel_admin_session","1");
+    $("loginOverlay").classList.add("hidden");renderAll();
+  }
+};
+function lockAdmin(){sessionStorage.removeItem("rahayel_admin_session");location.reload()}
+if(sessionStorage.getItem("rahayel_admin_session")==="1") $("loginOverlay").classList.add("hidden");
+initLogin();
+
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".tab,.page").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");$(b.dataset.page).classList.add("active");
+});
+
+function persist(){
+  localStorage.setItem(KEYS.products,JSON.stringify(products));
+  localStorage.setItem(KEYS.orders,JSON.stringify(orders));
+  localStorage.setItem(KEYS.settings,JSON.stringify(settings));
+  renderAll();
+}
+function renderAll(){renderInventory();renderDashboard();renderOrders();refreshOrderRows();loadSettings()}
+function renderInventory(){
+  $("inventoryBody").innerHTML=products.map((p,i)=>`<tr>
+    <td>${esc(p.name)}</td><td>${p.price} درهم</td><td><b>${p.qty}</b></td><td>${p.min}</td>
+    <td>${p.qty===0?'<span class="out">نفد</span>':p.qty<=p.min?'<span class="warn">منخفض</span>':'<span class="ok">متوفر</span>'}</td>
+    <td><button class="btn dark" onclick="editProduct(${i})">تعديل</button> <button class="btn danger" onclick="deleteProduct(${i})">حذف</button></td>
+  </tr>`).join("");
+}
+function renderDashboard(){
+  $("statStock").textContent=products.reduce((a,p)=>a+Number(p.qty),0);
+  $("statOrders").textContent=orders.length;
+  $("statSales").textContent=orders.reduce((a,o)=>a+Number(o.total),0).toFixed(0)+" د.إ";
+  const lows=products.filter(p=>p.qty<=p.min);$("statLow").textContent=lows.length;
+  $("alerts").innerHTML=lows.length?lows.map(p=>`<p>⚠️ <b>${esc(p.name)}</b> — المتبقي ${p.qty} قطعة.</p>`).join(""):"<p class='ok'>المخزون جيد ولا توجد تنبيهات.</p>";
+}
+function addProduct(){
+  const name=prompt("اسم المنتج:");if(!name)return;
+  const price=Number(prompt("السعر بالدرهم:","0")),qty=Number(prompt("الكمية:","0")),min=Number(prompt("حد التنبيه:","3"));
+  products.push({id:Date.now().toString(),name,price,qty,min});persist();
+}
+function editProduct(i){
+  let p=products[i],name=prompt("اسم المنتج:",p.name);if(name===null)return;
+  let price=Number(prompt("السعر:",p.price)),qty=Number(prompt("الكمية الحالية:",p.qty)),min=Number(prompt("حد التنبيه:",p.min));
+  products[i]={...p,name,price,qty,min};persist();
+}
+function deleteProduct(i){if(confirm("حذف المنتج من المخزون؟")){products.splice(i,1);persist()}}
+function productOptions(selected=""){return products.map(p=>`<option value="${p.id}" ${p.id===selected?"selected":""}>${esc(p.name)} — ${p.price} د.إ (متوفر ${p.qty})</option>`).join("")}
+function addOrderRow(pid="",qty=1){
+  const div=document.createElement("div");div.className="order-row";
+  div.innerHTML=`<select class="itemProduct" onchange="calcTotal()">${productOptions(pid)}</select><input class="itemQty" type="number" min="1" value="${qty}" oninput="calcTotal()"><button class="btn danger" onclick="this.parentElement.remove();calcTotal()">×</button>`;
+  $("orderItems").appendChild(div);calcTotal();
+}
+function refreshOrderRows(){document.querySelectorAll(".itemProduct").forEach(s=>{let v=s.value;s.innerHTML=productOptions(v)});calcTotal()}
+function getItems(){return [...document.querySelectorAll(".order-row")].map(r=>{let p=products.find(x=>x.id===r.querySelector(".itemProduct").value);let q=Number(r.querySelector(".itemQty").value||0);return p?{id:p.id,name:p.name,price:p.price,qty:q,subtotal:p.price*q}:null}).filter(Boolean)}
+function calcTotal(){let t=getItems().reduce((a,x)=>a+x.subtotal,0)+Number($("deliveryFee")?.value||0);$("orderTotal").textContent=t.toFixed(0)}
+$("deliveryFee").oninput=calcTotal;
+function resetOrder(){
+  $("customerName").value="";$("customerPhone").value="";$("deliveryFee").value=0;$("orderNote").value="";
+  $("paymentStatus").value="غير مدفوع";$("paymentMethod").value="نقدًا";$("orderItems").innerHTML="";addOrderRow()
+}
+function saveOrder(){
+  const items=getItems();if(!items.length)return alert("أضف منتجًا واحدًا على الأقل.");
+  for(const it of items){let p=products.find(x=>x.id===it.id);if(it.qty>p.qty)return alert(`الكمية غير كافية من: ${p.name}. المتوفر ${p.qty}`)}
+  items.forEach(it=>products.find(x=>x.id===it.id).qty-=it.qty);
+  const fee=Number($("deliveryFee").value||0),subtotal=items.reduce((a,x)=>a+x.subtotal,0);
+  const next=(orders.reduce((m,o)=>Math.max(m,Number((o.invoiceNo||"").replace(/\D/g,""))||0),0)+1);
+  const order={invoiceNo:"RAH-"+String(next).padStart(4,"0"),date:new Date().toLocaleString("ar-AE"),customer:$("customerName").value.trim(),phone:$("customerPhone").value.trim(),delivery:$("deliveryMethod").value,deliveryFee:fee,payment:$("paymentStatus").value,paymentMethod:$("paymentMethod").value,note:$("orderNote").value.trim(),items,subtotal,total:subtotal+fee};
+  orders.unshift(order);persist();showInvoice(order);resetOrder();
+}
+function renderOrders(){
+  const q=($("orderSearch")?.value||"").toLowerCase();
+  $("ordersBody").innerHTML=orders.filter(o=>[o.invoiceNo,o.customer,o.phone].join(" ").toLowerCase().includes(q)).map(o=>`<tr>
+    <td><b>${o.invoiceNo}</b></td><td>${o.date}</td><td>${esc(o.customer||"-")}</td><td>${esc(o.phone||"-")}</td>
+    <td>${o.total} درهم</td><td><span class="badge">${o.payment}</span></td>
+    <td><button class="btn dark" onclick="showInvoiceByNo('${o.invoiceNo}')">عرض/طباعة</button></td></tr>`).join("");
+}
+function showInvoiceByNo(no){let o=orders.find(x=>x.invoiceNo===no);if(o)showInvoice(o)}
+function showInvoice(o){
+  $("printInvoice").innerHTML=`<div class="invoice-head"><div><h2>${esc(settings.storeName)}</h2><div>رحايل للدراجات النارية</div></div><div><b>فاتورة ${o.invoiceNo}</b><br>${o.date}</div></div>
+  <p><b>العميل:</b> ${esc(o.customer||"-")} &nbsp; | &nbsp; <b>الهاتف:</b> ${esc(o.phone||"-")}</p>
+  <table><thead><tr><th>المنتج</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th></tr></thead><tbody>${o.items.map(x=>`<tr><td>${esc(x.name)}</td><td>${x.qty}</td><td>${x.price}</td><td>${x.subtotal}</td></tr>`).join("")}</tbody></table>
+  <p>طريقة الاستلام: ${o.delivery}${o.deliveryFee?` — رسوم التوصيل ${o.deliveryFee} درهم`:""}</p>
+  <p>الدفع: ${o.payment} — ${o.paymentMethod||"-"}</p>${o.note?`<p>ملاحظات: ${esc(o.note)}</p>`:""}
+  <div class="invoice-total">الإجمالي النهائي: ${o.total} درهم</div>
+  <p style="font-size:12px">واتساب: ${esc(settings.whatsapp)} | الاتصال: ${esc(settings.phone)}</p>
+  <div class="actions"><button class="btn primary" onclick="window.print()">طباعة / حفظ PDF</button><button class="btn dark" onclick="$('printInvoice').style.display='none'">إغلاق</button></div>`;
+  $("printInvoice").style.display="block";$("printInvoice").scrollIntoView({behavior:"smooth"});
+}
+function loadSettings(){$("storeName").value=settings.storeName;$("storeWhatsapp").value=settings.whatsapp;$("storePhone").value=settings.phone}
+function saveSettings(){settings={storeName:$("storeName").value.trim()||"Rahayel Motorcycle",whatsapp:$("storeWhatsapp").value.trim(),phone:$("storePhone").value.trim()};persist();alert("تم حفظ الإعدادات.")}
+async function changePassword(){
+  const p=prompt("أدخل كلمة المرور الجديدة (6 أحرف/أرقام على الأقل):");if(p===null)return;if(p.length<6)return alert("كلمة المرور قصيرة.");
+  const c=prompt("أعد كتابة كلمة المرور الجديدة:");if(p!==c)return alert("كلمتا المرور غير متطابقتين.");
+  localStorage.setItem(KEYS.pwd,await sha256(p));alert("تم تغيير كلمة المرور.");
+}
+function clearAllData(){
+  if(!confirm("سيتم حذف المخزون والفواتير والعملاء من هذا الجهاز. هل أنت متأكد؟"))return;
+  if(!confirm("تأكيد نهائي: هل تريد مسح جميع البيانات؟"))return;
+  localStorage.removeItem(KEYS.products);localStorage.removeItem(KEYS.orders);location.reload();
+}
+function exportBackup(){
+  const data={version:2,exportedAt:new Date().toISOString(),products,orders,settings};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="rahayel-backup-"+new Date().toISOString().slice(0,10)+".json";a.click();URL.revokeObjectURL(a.href);
+}
+$("importFile").onchange=async e=>{
+  const file=e.target.files[0];if(!file)return;
+  try{const data=JSON.parse(await file.text());if(!Array.isArray(data.products)||!Array.isArray(data.orders))throw new Error();
+    if(!confirm("استيراد النسخة سيستبدل البيانات الحالية. متابعة؟"))return;
+    products=data.products;orders=data.orders;settings=data.settings||settings;persist();alert("تم الاستيراد بنجاح.");
+  }catch{alert("ملف النسخة الاحتياطية غير صالح.");}
+  e.target.value="";
+};
+if(!$("orderItems").children.length)addOrderRow();
+renderAll();
+</script>
+</body>
+</html>
