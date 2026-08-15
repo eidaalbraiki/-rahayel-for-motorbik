@@ -205,7 +205,7 @@ const DEFAULT_PRODUCTS=[
 ];
 let products=JSON.parse(localStorage.getItem(KEYS.products)||"null")||DEFAULT_PRODUCTS;
 let orders=JSON.parse(localStorage.getItem(KEYS.orders)||"[]");
-let settings=JSON.parse(localStorage.getItem(KEYS.settings)||"null")||{storeName:"Rahayel Motorcycle",whatsapp:"+971 56 911 2963",phone:"0555007282"};
+let settings=JSON.parse(localStorage.getItem(KEYS.settings)||"null")||{storeName:"Rahayel Motorcycle",whatsapp:"+971 55 500 7282",phone:"0555007282"};
 
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
