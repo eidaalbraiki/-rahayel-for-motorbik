@@ -107,6 +107,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
   <button class="tab" data-page="inventory">المخزون</button>
   <button class="tab" data-page="neworder">طلب / فاتورة</button>
   <button class="tab" data-page="orders">الفواتير والعملاء</button>
+  <button class="tab" data-page="finance">المالية والمصروفات</button>
   <button class="tab" data-page="settings">الإعدادات</button>
 </div>
 
@@ -129,7 +130,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
   </div>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>المنتج</th><th>السعر</th><th>الكمية</th><th>حد التنبيه</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+      <thead><tr><th>المنتج</th><th>سعر البيع</th><th>تكلفة القطعة</th><th>الكمية</th><th>حد التنبيه</th><th>الحالة</th><th>إجراءات</th></tr></thead>
       <tbody id="inventoryBody"></tbody>
     </table>
   </div>
@@ -143,6 +144,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
       <div class="field"><label>رقم الهاتف</label><input id="customerPhone" inputmode="tel" placeholder="05xxxxxxxx"></div>
       <div class="field"><label>طريقة الاستلام</label><select id="deliveryMethod"><option>استلام</option><option>توصيل</option></select></div>
       <div class="field"><label>رسوم التوصيل</label><input id="deliveryFee" type="number" min="0" value="0"></div>
+      <div class="field"><label>تكلفة الشحن الفعلية عليك</label><input id="shippingCost" type="number" min="0" value="0" placeholder="مثال: 27"></div>
       <div class="field"><label>حالة الدفع</label><select id="paymentStatus"><option>غير مدفوع</option><option>مدفوع</option></select></div>
       <div class="field"><label>طريقة الدفع</label><select id="paymentMethod"><option>نقدًا</option><option>تحويل</option><option>رابط دفع</option><option>أخرى</option></select></div>
       <div class="field" style="grid-column:1/-1"><label>ملاحظات</label><textarea id="orderNote" placeholder="اختياري"></textarea></div>
@@ -167,6 +169,52 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
     <table>
       <thead><tr><th>رقم الفاتورة</th><th>التاريخ</th><th>العميل</th><th>الهاتف</th><th>الإجمالي</th><th>الدفع</th><th>إجراءات</th></tr></thead>
       <tbody id="ordersBody"></tbody>
+    </table>
+  </div>
+</section>
+
+
+<section id="finance" class="page">
+  <h2>المالية والمصروفات</h2>
+  <div class="grid">
+    <div class="card stat"><b id="finSales">0</b><span>إجمالي المبيعات</span></div>
+    <div class="card stat"><b id="finCOGS">0</b><span>تكلفة المنتجات المباعة</span></div>
+    <div class="card stat"><b id="finShipping">0</b><span>تكلفة التوصيل</span></div>
+    <div class="card stat"><b id="finProfit">0</b><span>صافي الربح</span></div>
+  </div>
+
+  <div class="card section">
+    <div class="actions" style="justify-content:space-between;align-items:center">
+      <h3 style="margin:0">تسجيل مصروف</h3>
+      <select id="financePeriod" onchange="renderFinance()" style="width:auto">
+        <option value="all">كل الفترة</option>
+        <option value="month">هذا الشهر</option>
+        <option value="today">اليوم</option>
+      </select>
+    </div>
+    <div class="form-grid" style="margin-top:14px">
+      <div class="field"><label>التاريخ</label><input id="expenseDate" type="date"></div>
+      <div class="field"><label>نوع المصروف</label><select id="expenseType"><option>شراء بضاعة</option><option>فيلامنت</option><option>تغليف</option><option>إعلان</option><option>شحن</option><option>أخرى</option></select></div>
+      <div class="field"><label>المبلغ</label><input id="expenseAmount" type="number" min="0" step="0.01"></div>
+      <div class="field" style="grid-column:1/-1"><label>الوصف / الملاحظة</label><input id="expenseNote" placeholder="مثال: بكرة PLA أو إعلان إنستقرام"></div>
+    </div>
+    <div class="actions" style="margin-top:12px"><button class="btn primary" onclick="addExpense()">+ حفظ المصروف</button></div>
+  </div>
+
+  <div class="card section">
+    <h3>ملخص الفترة</h3>
+    <div class="grid">
+      <div class="stat"><b id="finExpenses">0</b><span>مصروفات إضافية</span></div>
+      <div class="stat"><b id="finGross">0</b><span>الربح بعد تكلفة المنتج والشحن</span></div>
+      <div class="stat"><b id="finOrders">0</b><span>عدد الطلبات</span></div>
+      <div class="stat"><b id="finAvg">0</b><span>متوسط قيمة الطلب</span></div>
+    </div>
+  </div>
+
+  <div class="section table-wrap">
+    <table>
+      <thead><tr><th>التاريخ</th><th>النوع</th><th>الوصف</th><th>المبلغ</th><th>إجراء</th></tr></thead>
+      <tbody id="expensesBody"></tbody>
     </table>
   </div>
 </section>
@@ -198,7 +246,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 <div id="printInvoice" class="invoice"></div>
 
 <script>
-const KEYS={products:"rahayel_products_v2",orders:"rahayel_orders_v2",settings:"rahayel_settings_v2",pwd:"rahayel_admin_hash_v2"};
+const KEYS={products:"rahayel_products_v2",orders:"rahayel_orders_v2",settings:"rahayel_settings_v2",expenses:"rahayel_expenses_v2",pwd:"rahayel_admin_hash_v2"};
 const DEFAULT_PRODUCTS=[
   {id:"mount",name:"قاعدة رحايل للهاتف",price:220,qty:0,min:3},
   {id:"plate",name:"إطار لوحة الدراجة النارية",price:45,qty:0,min:3},
@@ -207,6 +255,8 @@ const DEFAULT_PRODUCTS=[
 ];
 let products=JSON.parse(localStorage.getItem(KEYS.products)||"null")||DEFAULT_PRODUCTS;
 let orders=JSON.parse(localStorage.getItem(KEYS.orders)||"[]");
+let expenses=JSON.parse(localStorage.getItem(KEYS.expenses)||"[]");
+products=products.map(p=>({...p,cost:Number(p.cost||0)}));
 let settings=JSON.parse(localStorage.getItem(KEYS.settings)||"null")||{storeName:"Rahayel Motorcycle",whatsapp:"+971 56 911 2963",phone:"0555007282"};
 
 const $=id=>document.getElementById(id);
@@ -252,12 +302,13 @@ function persist(){
   localStorage.setItem(KEYS.products,JSON.stringify(products));
   localStorage.setItem(KEYS.orders,JSON.stringify(orders));
   localStorage.setItem(KEYS.settings,JSON.stringify(settings));
+  localStorage.setItem(KEYS.expenses,JSON.stringify(expenses));
   renderAll();
 }
-function renderAll(){renderInventory();renderDashboard();renderOrders();refreshOrderRows();loadSettings()}
+function renderAll(){renderInventory();renderDashboard();renderOrders();renderFinance();refreshOrderRows();loadSettings()}
 function renderInventory(){
   $("inventoryBody").innerHTML=products.map((p,i)=>`<tr>
-    <td>${esc(p.name)}</td><td>${p.price} درهم</td><td><b>${p.qty}</b></td><td>${p.min}</td>
+    <td>${esc(p.name)}</td><td>${p.price} درهم</td><td>${Number(p.cost||0).toFixed(2)} درهم</td><td><b>${p.qty}</b></td><td>${p.min}</td>
     <td>${p.qty===0?'<span class="out">نفد</span>':p.qty<=p.min?'<span class="warn">منخفض</span>':'<span class="ok">متوفر</span>'}</td>
     <td><button class="btn dark" onclick="editProduct(${i})">تعديل</button> <button class="btn danger" onclick="deleteProduct(${i})">حذف</button></td>
   </tr>`).join("");
@@ -271,13 +322,13 @@ function renderDashboard(){
 }
 function addProduct(){
   const name=prompt("اسم المنتج:");if(!name)return;
-  const price=Number(prompt("السعر بالدرهم:","0")),qty=Number(prompt("الكمية:","0")),min=Number(prompt("حد التنبيه:","3"));
-  products.push({id:Date.now().toString(),name,price,qty,min});persist();
+  const price=Number(prompt("سعر البيع بالدرهم:","0")),cost=Number(prompt("تكلفة القطعة عليك:","0")),qty=Number(prompt("الكمية:","0")),min=Number(prompt("حد التنبيه:","3"));
+  products.push({id:Date.now().toString(),name,price,cost,qty,min});persist();
 }
 function editProduct(i){
   let p=products[i],name=prompt("اسم المنتج:",p.name);if(name===null)return;
-  let price=Number(prompt("السعر:",p.price)),qty=Number(prompt("الكمية الحالية:",p.qty)),min=Number(prompt("حد التنبيه:",p.min));
-  products[i]={...p,name,price,qty,min};persist();
+  let price=Number(prompt("سعر البيع:",p.price)),cost=Number(prompt("تكلفة القطعة عليك:",p.cost||0)),qty=Number(prompt("الكمية الحالية:",p.qty)),min=Number(prompt("حد التنبيه:",p.min));
+  products[i]={...p,name,price,cost,qty,min};persist();
 }
 function deleteProduct(i){if(confirm("حذف المنتج من المخزون؟")){products.splice(i,1);persist()}}
 function productOptions(selected=""){return products.map(p=>`<option value="${p.id}" ${p.id===selected?"selected":""}>${esc(p.name)} — ${p.price} د.إ (متوفر ${p.qty})</option>`).join("")}
@@ -287,20 +338,20 @@ function addOrderRow(pid="",qty=1){
   $("orderItems").appendChild(div);calcTotal();
 }
 function refreshOrderRows(){document.querySelectorAll(".itemProduct").forEach(s=>{let v=s.value;s.innerHTML=productOptions(v)});calcTotal()}
-function getItems(){return [...document.querySelectorAll(".order-row")].map(r=>{let p=products.find(x=>x.id===r.querySelector(".itemProduct").value);let q=Number(r.querySelector(".itemQty").value||0);return p?{id:p.id,name:p.name,price:p.price,qty:q,subtotal:p.price*q}:null}).filter(Boolean)}
+function getItems(){return [...document.querySelectorAll(".order-row")].map(r=>{let p=products.find(x=>x.id===r.querySelector(".itemProduct").value);let q=Number(r.querySelector(".itemQty").value||0);return p?{id:p.id,name:p.name,price:p.price,cost:Number(p.cost||0),qty:q,subtotal:p.price*q}:null}).filter(Boolean)}
 function calcTotal(){let t=getItems().reduce((a,x)=>a+x.subtotal,0)+Number($("deliveryFee")?.value||0);$("orderTotal").textContent=t.toFixed(0)}
 $("deliveryFee").oninput=calcTotal;
 function resetOrder(){
-  $("customerName").value="";$("customerPhone").value="";$("deliveryFee").value=0;$("orderNote").value="";
+  $("customerName").value="";$("customerPhone").value="";$("deliveryFee").value=0;$("shippingCost").value=0;$("orderNote").value="";
   $("paymentStatus").value="غير مدفوع";$("paymentMethod").value="نقدًا";$("orderItems").innerHTML="";addOrderRow()
 }
 function saveOrder(){
   const items=getItems();if(!items.length)return alert("أضف منتجًا واحدًا على الأقل.");
   for(const it of items){let p=products.find(x=>x.id===it.id);if(it.qty>p.qty)return alert(`الكمية غير كافية من: ${p.name}. المتوفر ${p.qty}`)}
   items.forEach(it=>products.find(x=>x.id===it.id).qty-=it.qty);
-  const fee=Number($("deliveryFee").value||0),subtotal=items.reduce((a,x)=>a+x.subtotal,0);
+  const fee=Number($("deliveryFee").value||0),shippingCost=Number($("shippingCost").value||0),subtotal=items.reduce((a,x)=>a+x.subtotal,0);
   const next=(orders.reduce((m,o)=>Math.max(m,Number((o.invoiceNo||"").replace(/\D/g,""))||0),0)+1);
-  const order={invoiceNo:"RAH-"+String(next).padStart(4,"0"),date:new Date().toLocaleString("ar-AE"),customer:$("customerName").value.trim(),phone:$("customerPhone").value.trim(),delivery:$("deliveryMethod").value,deliveryFee:fee,payment:$("paymentStatus").value,paymentMethod:$("paymentMethod").value,note:$("orderNote").value.trim(),items,subtotal,total:subtotal+fee};
+  const order={invoiceNo:"RAH-"+String(next).padStart(4,"0"),createdAt:new Date().toISOString(),date:new Date().toLocaleString("ar-AE"),customer:$("customerName").value.trim(),phone:$("customerPhone").value.trim(),delivery:$("deliveryMethod").value,deliveryFee:fee,shippingCost,payment:$("paymentStatus").value,paymentMethod:$("paymentMethod").value,note:$("orderNote").value.trim(),items,subtotal,total:subtotal+fee};
   orders.unshift(order);persist();showInvoice(order);resetOrder();
 }
 function renderOrders(){
@@ -333,10 +384,10 @@ async function changePassword(){
 function clearAllData(){
   if(!confirm("سيتم حذف المخزون والفواتير والعملاء من هذا الجهاز. هل أنت متأكد؟"))return;
   if(!confirm("تأكيد نهائي: هل تريد مسح جميع البيانات؟"))return;
-  localStorage.removeItem(KEYS.products);localStorage.removeItem(KEYS.orders);location.reload();
+  localStorage.removeItem(KEYS.products);localStorage.removeItem(KEYS.orders);localStorage.removeItem(KEYS.expenses);location.reload();
 }
 function exportBackup(){
-  const data={version:2,exportedAt:new Date().toISOString(),products,orders,settings};
+  const data={version:3,exportedAt:new Date().toISOString(),products,orders,expenses,settings};
   const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
   const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="rahayel-backup-"+new Date().toISOString().slice(0,10)+".json";a.click();URL.revokeObjectURL(a.href);
 }
@@ -344,14 +395,57 @@ $("importFile").onchange=async e=>{
   const file=e.target.files[0];if(!file)return;
   try{const data=JSON.parse(await file.text());if(!Array.isArray(data.products)||!Array.isArray(data.orders))throw new Error();
     if(!confirm("استيراد النسخة سيستبدل البيانات الحالية. متابعة؟"))return;
-    products=data.products;orders=data.orders;settings=data.settings||settings;persist();alert("تم الاستيراد بنجاح.");
+    products=data.products.map(p=>({...p,cost:Number(p.cost||0)}));orders=data.orders;expenses=Array.isArray(data.expenses)?data.expenses:[];settings=data.settings||settings;persist();alert("تم الاستيراد بنجاح.");
   }catch{alert("ملف النسخة الاحتياطية غير صالح.");}
   e.target.value="";
 };
+
+function parseOrderDate(o){
+  if(o.createdAt) return new Date(o.createdAt);
+  return null;
+}
+function periodMatchDate(d,period){
+  if(period==="all") return true;
+  if(!d || isNaN(d)) return period==="all";
+  const now=new Date();
+  if(period==="today") return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth()&&d.getDate()===now.getDate();
+  if(period==="month") return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();
+  return true;
+}
+function expenseDateObj(e){return e.date?new Date(e.date+"T12:00:00"):null}
+function renderFinance(){
+  if(!$("finSales")) return;
+  const period=$("financePeriod")?.value||"all";
+  const filteredOrders=orders.filter(o=>periodMatchDate(parseOrderDate(o),period));
+  const filteredExpenses=expenses.filter(e=>periodMatchDate(expenseDateObj(e),period));
+  const sales=filteredOrders.reduce((a,o)=>a+Number(o.total||0),0);
+  const cogs=filteredOrders.reduce((a,o)=>a+(o.items||[]).reduce((s,x)=>s+Number(x.cost||0)*Number(x.qty||0),0),0);
+  const shipping=filteredOrders.reduce((a,o)=>a+Number(o.shippingCost||0),0);
+  const extra=filteredExpenses.reduce((a,e)=>a+Number(e.amount||0),0);
+  const gross=sales-cogs-shipping;
+  const profit=gross-extra;
+  $("finSales").textContent=sales.toFixed(2)+" د.إ";
+  $("finCOGS").textContent=cogs.toFixed(2)+" د.إ";
+  $("finShipping").textContent=shipping.toFixed(2)+" د.إ";
+  $("finExpenses").textContent=extra.toFixed(2)+" د.إ";
+  $("finGross").textContent=gross.toFixed(2)+" د.إ";
+  $("finProfit").textContent=profit.toFixed(2)+" د.إ";
+  $("finOrders").textContent=filteredOrders.length;
+  $("finAvg").textContent=(filteredOrders.length?sales/filteredOrders.length:0).toFixed(2)+" د.إ";
+  $("expensesBody").innerHTML=filteredExpenses.length?filteredExpenses.slice().sort((a,b)=>(b.date||"").localeCompare(a.date||"")).map(e=>`<tr><td>${esc(e.date)}</td><td>${esc(e.type)}</td><td>${esc(e.note||"-")}</td><td>${Number(e.amount).toFixed(2)} درهم</td><td><button class="btn danger" onclick="deleteExpense('${e.id}')">حذف</button></td></tr>`).join(""):'<tr><td colspan="5" class="small">لا توجد مصروفات مسجلة لهذه الفترة.</td></tr>';
+}
+function addExpense(){
+  const date=$("expenseDate").value||new Date().toISOString().slice(0,10);
+  const amount=Number($("expenseAmount").value||0);
+  if(amount<=0)return alert("أدخل مبلغ المصروف.");
+  expenses.push({id:String(Date.now()),date,type:$("expenseType").value,amount,note:$("expenseNote").value.trim()});
+  $("expenseAmount").value="";$("expenseNote").value="";persist();
+}
+function deleteExpense(id){if(confirm("حذف هذا المصروف؟")){expenses=expenses.filter(e=>e.id!==id);persist()}}
+if($("expenseDate"))$("expenseDate").value=new Date().toISOString().slice(0,10);
+
 if(!$("orderItems").children.length)addOrderRow();
 renderAll();
 </script>
 </body>
-</html><style media="print">
-@page { margin: 12mm; }
-</style>
+</html>
