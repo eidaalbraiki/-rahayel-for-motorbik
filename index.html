@@ -172,6 +172,30 @@
     </div>
 
     <div class="product-grid">
+
+      <article class="product-card">
+        <div class="product-media">
+          <img src="rahayel-gear-station.png" alt="محطة رحايل لتنظيم معدات الدراجة النارية">
+          <span class="product-badge">شامل التوصيل</span>
+        </div>
+        <div class="product-body">
+          <div class="product-kicker">Rahayel Gear Station</div>
+          <h3>محطة رحايل لتنظيم معدات الدراجة</h3>
+          <p>طقم متكامل لترتيب معدات الدراجة في مكان واحد بشكل أنيق وعملي. يشمل لوحة IKEA SKÅDIS الأصلية مع القطع المطبوعة ثلاثية الأبعاد لتنظيم الخوذة والنظارات والقفازات والحقائب ومعدات القدم.</p>
+          <div class="mini-specs">
+            <span>🪖 حامل للخوذة</span>
+            <span>🥽 حامل للنظارات</span>
+            <span>🧤 حامل للقفازات</span>
+            <span>🎒 عدد 2 حامل للحقائب</span>
+            <span>🥾 حامل لمعدات وحماية القدم</span>
+            <span>🇦🇪 قطع 3D مصنوعة في الإمارات</span>
+          </div>
+          <div class="product-footer">
+            <div class="product-price">275 <small>درهم</small><div style="font-size:12px;color:#aaa;margin-top:4px">شامل التوصيل داخل الإمارات</div></div>
+            <a class="btn btn-main whatsapp-station" href="#">اطلب الطقم الكامل</a>
+          </div>
+        </div>
+      </article>
       <article class="product-card">
         <a class="product-media product-link" href="phone-mount.html" aria-label="عرض تفاصيل قاعدة رحايل للهاتف">
           <img src="rahayel-phone-mount-main.jpg" alt="قاعدة رحايل للهاتف للدراجة النارية">
@@ -337,10 +361,11 @@
   const whatsappNumber = "971555007282";
 
   const links = {
-    mount: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أرغب في طلب طلبًا مسبقًا لقاعدة Rahayel Ride Mount لتثبيت الهاتف على الدراجة النارية بسعر 220 درهم.")}`,
-    plate: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أرغب في طلب إطار لوحة رحايل للدراجة النارية بسعر 45 درهم.")}`,
-    helmet: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أرغب في طلب حامل خوذة ومعدات رحايل بسعر 55 درهم. هل المنتج متوفر؟")}`,
-    cable: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أرغب في طلب منظّم سلك الشحن للدراجة النارية بسعر 30 درهم. هل المنتج متوفر؟")}`,
+    mount: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أبغي أطلب طلبًا مسبقًا لقاعدة Rahayel Ride Mount لتثبيت الهاتف على الدراجة النارية بسعر 220 درهم.")}`,
+    station: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أبغي أطلب محطة رحايل لتنظيم معدات الدراجة بسعر 275 درهم شامل التوصيل داخل الإمارات.")}`,
+    plate: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أبغي أطلب إطار لوحة رحايل للدراجة النارية بسعر 45 درهم.")}`,
+    helmet: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أبغي أطلب حامل خوذة ومعدات رحايل بسعر 55 درهم. هل المنتج متوفر؟")}`,
+    cable: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أبغي أطلب منظّم سلك الشحن للدراجة النارية بسعر 30 درهم. هل المنتج متوفر؟")}`,
     general: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أبغي أستفسر عن منتجات رحايل للدراجات النارية.")}`
   };
 
@@ -361,6 +386,7 @@
     });
   }
 
+  bindWhatsApp(".whatsapp-station", links.station, "whatsapp_station_click", "Rahayel Gear Station");
   bindWhatsApp(".whatsapp-mount", links.mount, "whatsapp_mount_click", "Rahayel Ride Mount");
   bindWhatsApp(".whatsapp-plate", links.plate, "whatsapp_plate_click", "Rahayel Plate Frame");
   bindWhatsApp(".whatsapp-helmet", links.helmet, "whatsapp_helmet_click", "Rahayel Gear Hook");
