@@ -268,31 +268,30 @@
           </div>
         </div>
       </article>
-    </div>
+    
+      <article class="product-card">
+        <a class="product-media product-link" href="keychains.html" aria-label="عرض ميداليات الدراجات">
+          <img src="keychain-honda.jpg" alt="ميداليات رحايل للدراجات النارية">
+          <span class="product-badge custom">30 درهم</span>
+        </a>
+        <div class="product-body">
+          <div class="product-kicker">Rahayel Motorcycle Keychains</div>
+          <h3>ميداليات الدراجات</h3>
+          <p>ميداليات مطبوعة بتقنية 3D بتصاميم متعددة مستوحاة من عالم الدراجات. اختر التصميم المناسب لمفتاح دراجتك.</p>
+          <div class="mini-specs">
+            <span>🏍 تصاميم متعددة</span>
+            <span>🧩 طباعة 3D</span>
+            <span>🇦🇪 مطبوعة محليًا</span>
+          </div>
+          <div class="product-footer">
+            <div class="product-price">30 <small>درهم</small></div>
+            <a class="btn btn-main" href="keychains.html">شاهد جميع التصاميم</a>
+          </div>
+        </div>
+      </article>
+</div>
   </section>
-
-  
-  <section>
-    <div class="section-head">
-      <div>
-        <h2>تصميم <span>إطار اللوحة</span></h2>
-        <p>تصميم واحد ثابت: إطار أسود مع كتابة «الإمارات العربية المتحدة» باللون الأبيض.</p>
-      </div>
-    </div>
-
-    <div class="single-plate">
-      <div class="plate-shot"><img src="plate-frame.jpg" alt="إطار لوحة دراجة نارية أسود بكتابة الإمارات العربية المتحدة باللون الأبيض"></div>
-      <div class="plate-info">
-        <span class="tag">RAHAYEL PLATE FRAME</span>
-        <h2>تصميم بسيط وواضح</h2>
-        <p>إطار أسود مخصص للوحة الدراجة النارية مع كتابة بيضاء. لا توجد خيارات تخصيص لهذا المنتج حاليًا.</p>
-        <div class="product-price">45 <small>درهم</small></div>
-        <a class="btn btn-main whatsapp-plate" href="#">اطلب إطار اللوحة</a>
-      </div>
-    </div>
-  </section>
-
-  <section id="faq">
+<section id="faq">
     <div class="section-head">
       <div>
         <h2>معلومات <span>مهمة قبل الطلب</span></h2>
@@ -341,7 +340,6 @@
   const links = {
     mount: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أبغي أطلب طلبًا مسبقًا لقاعدة Rahayel Ride Mount لتثبيت الهاتف على الدراجة النارية بسعر 220 درهم.")}`,
     station: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أبغي أطلب محطة رحايل لتنظيم معدات الدراجة بسعر 275 درهم.")}`,
-    plate: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أبغي أطلب إطار لوحة رحايل للدراجة النارية بسعر 45 درهم.")}`,
     helmet: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أبغي أطلب حامل خوذة ومعدات رحايل بسعر 55 درهم. هل المنتج متوفر؟")}`,
     cable: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أبغي أطلب منظّم سلك الشحن للدراجة النارية بسعر 30 درهم. هل المنتج متوفر؟")}`,
     general: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("السلام عليكم، أبغي أستفسر عن منتجات رحايل للدراجات النارية.")}`
@@ -366,7 +364,6 @@
 
   bindWhatsApp(".whatsapp-station", links.station, "whatsapp_station_click", "Rahayel Gear Station");
   bindWhatsApp(".whatsapp-mount", links.mount, "whatsapp_mount_click", "Rahayel Ride Mount");
-  bindWhatsApp(".whatsapp-plate", links.plate, "whatsapp_plate_click", "Rahayel Plate Frame");
   bindWhatsApp(".whatsapp-helmet", links.helmet, "whatsapp_helmet_click", "Rahayel Gear Hook");
   bindWhatsApp(".whatsapp-cable", links.cable, "whatsapp_cable_click", "Rahayel Cable Organizer");
 bindWhatsApp(".whatsapp-general", links.general, "whatsapp_general_click", "Rahayel Motorcycle");
