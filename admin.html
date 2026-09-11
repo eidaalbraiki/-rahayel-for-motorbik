@@ -199,11 +199,14 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 const KEYS={products:"rahayel_products_v2",orders:"rahayel_orders_v2",settings:"rahayel_settings_v2",pwd:"rahayel_admin_hash_v2"};
 const DEFAULT_PRODUCTS=[
   {id:"mount",name:"قاعدة رحايل للهاتف",price:220,qty:0,min:3},
+  {id:"camera",name:"قاعدة كاميرا تلسكوبية للدراجة",price:320,qty:7,min:2},
   {id:"plate",name:"إطار لوحة الدراجة النارية",price:45,qty:0,min:3},
   {id:"helmet",name:"حامل الخوذة ومعدات رحايل",price:55,qty:0,min:3},
   {id:"cable",name:"منظّم سلك الشحن",price:30,qty:0,min:3}
 ];
 let products=JSON.parse(localStorage.getItem(KEYS.products)||"null")||DEFAULT_PRODUCTS;
+if(!products.some(p=>p.id==="camera")){products.push({id:"camera",name:"قاعدة كاميرا تلسكوبية للدراجة",price:320,qty:7,min:2});localStorage.setItem(KEYS.products,JSON.stringify(products));}
+const mountProduct=products.find(p=>p.id==="mount");if(mountProduct){mountProduct.price=220;localStorage.setItem(KEYS.products,JSON.stringify(products));}
 let orders=JSON.parse(localStorage.getItem(KEYS.orders)||"[]");
 let settings=JSON.parse(localStorage.getItem(KEYS.settings)||"null")||{storeName:"Rahayel Motorcycle",whatsapp:"+971 56 911 2963",phone:"0555007282"};
 
@@ -306,33 +309,9 @@ function renderOrders(){
   $("ordersBody").innerHTML=orders.filter(o=>[o.invoiceNo,o.customer,o.phone].join(" ").toLowerCase().includes(q)).map(o=>`<tr>
     <td><b>${o.invoiceNo}</b></td><td>${o.date}</td><td>${esc(o.customer||"-")}</td><td>${esc(o.phone||"-")}</td>
     <td>${o.total} درهم</td><td><span class="badge">${o.payment}</span></td>
-    <td><button class="btn dark" onclick="showInvoiceByNo('${o.invoiceNo}')">عرض/طباعة</button> <button class="btn primary" onclick="customerMessage('${o.invoiceNo}')">رسالة العميل</button></td></tr>`).join("");
+    <td><button class="btn dark" onclick="showInvoiceByNo('${o.invoiceNo}')">عرض/طباعة</button></td></tr>`).join("");
 }
 function showInvoiceByNo(no){let o=orders.find(x=>x.invoiceNo===no);if(o)showInvoice(o)}
-function customerMessage(no){
-  const o=orders.find(x=>x.invoiceNo===no); if(!o)return;
-  const paid=String(o.payment||"").includes("مدفوع") && !String(o.payment||"").includes("غير");
-  let method=paid?"تم الدفع ✅":(o.paymentMethod||"غير محددة");
-  let extra="";
-  if(!paid){
-    if(method.includes("تحويل")){
-      const account=prompt("أدخل رقم الحساب / IBAN:",localStorage.getItem("rahayel_bank_account")||"")||"";
-      if(account)localStorage.setItem("rahayel_bank_account",account);
-      extra=`\nالمبلغ المطلوب: ${o.total} درهم\nطريقة الدفع: تحويل بنكي${account?`\nرقم الحساب / IBAN: ${account}`:""}`;
-    }else if(method.includes("رابط")){
-      const link=prompt("ألصق رابط الدفع:","")||"";
-      extra=`\nالمبلغ المطلوب: ${o.total} درهم\nطريقة الدفع: رابط دفع${link?`\n${link}`:""}`;
-    }else if(method.includes("استلام") || method.includes("نقد")){
-      extra=`\nطريقة الدفع: الدفع عند الاستلام\nالمبلغ المطلوب عند الاستلام: ${o.total} درهم`;
-    }else extra=`\nالمبلغ المطلوب: ${o.total} درهم\nطريقة الدفع: ${method}`;
-  }
-  const text=`السلام عليكم${o.customer?` ${o.customer}`:""}،\n\nنحب نبلغك أن طلبك رقم ${o.invoiceNo} خارج للتوصيل 🚚\nحالة الدفع: ${paid?"تم الدفع ✅":"غير مدفوع"}${extra}\n\nيرجى الانتباه لاتصال مندوب التوصيل لاستلام الطلب.\nشكرًا لثقتك في RAHAYEL، ونتمنى أن ينال المنتج إعجابك.`;
-  navigator.clipboard?.writeText(text).catch(()=>{});
-  const phone=String(o.phone||"").replace(/\D/g,"").replace(/^0/,"971");
-  if(confirm(text+"\n\nتم تجهيز النص. اضغط موافق لفتح واتساب، أو إلغاء للبقاء في الصفحة.")){
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`,"_blank");
-  }
-}
 function showInvoice(o){
   $("printInvoice").innerHTML=`<div class="invoice-head"><div><h2>${esc(settings.storeName)}</h2><div>رحايل للدراجات النارية</div></div><div><b>فاتورة ${o.invoiceNo}</b><br>${o.date}</div></div>
   <p><b>العميل:</b> ${esc(o.customer||"-")} &nbsp; | &nbsp; <b>الهاتف:</b> ${esc(o.phone||"-")}</p>
